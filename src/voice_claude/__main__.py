@@ -7,6 +7,14 @@ import threading
 os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
 os.environ.setdefault("HF_HUB_VERBOSITY", "error")
 
+# Fix SSL cert path when running inside a PyInstaller bundle
+try:
+    import certifi
+    os.environ.setdefault("SSL_CERT_FILE", certifi.where())
+    os.environ.setdefault("REQUESTS_CA_BUNDLE", certifi.where())
+except ImportError:
+    pass
+
 from pynput import keyboard
 
 from .audio import AudioRecorder

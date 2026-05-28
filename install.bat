@@ -52,6 +52,10 @@ del "%TMP_ZIP%"
 
 :: GitHub zips extract to <repo>-<branch>\ subfolder
 set SRC=%TMP_DIR%\voice-claude-%BRANCH%
+if not exist "%SRC%\entry.py" (
+    echo ERROR: Source not extracted correctly. Expected: %SRC%
+    pause & exit /b 1
+)
 
 :: ── 3. Virtual environment ───────────────────────────────────────────────────
 echo [3/5] Setting up virtual environment...
@@ -64,7 +68,7 @@ set VPYTHON=%VENV%\Scripts\python.exe
 echo [4/5] Installing dependencies...
 set PIP="%VPYTHON%" -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org
 %PIP% --upgrade pip -q
-%PIP% faster-whisper sounddevice numpy pynput pystray Pillow -q
+%PIP% faster-whisper sounddevice numpy pynput pystray Pillow certifi -q
 %PIP% pyinstaller -q
 %PIP% "%SRC%" -q
 
@@ -75,6 +79,7 @@ echo [5/5] Building voice-claude.exe...
     --workpath "%TEMP%\voice-claude-build" ^
     --collect-all faster_whisper ^
     --collect-all ctranslate2 ^
+    --collect-all certifi ^
     --hidden-import sounddevice ^
     --hidden-import pystray ^
     --hidden-import PIL ^
