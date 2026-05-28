@@ -65,6 +65,7 @@ echo [4/5] Installing dependencies...
 "%VPYTHON%" -m pip install --upgrade pip -q
 "%VPYTHON%" -m pip install faster-whisper sounddevice numpy pynput pyperclip -q
 "%VPYTHON%" -m pip install pyinstaller -q
+"%VPYTHON%" -m pip install "%SRC%" -q
 
 echo [5/5] Building voice-claude.exe...
 "%VPYTHON%" -m PyInstaller --noconfirm --onedir --console ^
@@ -74,7 +75,7 @@ echo [5/5] Building voice-claude.exe...
     --collect-all faster_whisper ^
     --collect-all ctranslate2 ^
     --hidden-import sounddevice ^
-    "%SRC%\src\voice_claude\__main__.py"
+    "%SRC%\entry.py"
 
 rd /s /q "%TMP_DIR%" 2>nul
 
