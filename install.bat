@@ -63,7 +63,7 @@ set VPYTHON=%VENV%\Scripts\python.exe
 :: ── 4. Install deps + build exe ──────────────────────────────────────────────
 echo [4/5] Installing dependencies...
 "%VPYTHON%" -m pip install --upgrade pip -q
-"%VPYTHON%" -m pip install faster-whisper sounddevice numpy pynput pyperclip pystray Pillow -q
+"%VPYTHON%" -m pip install faster-whisper sounddevice numpy pynput pystray Pillow -q
 "%VPYTHON%" -m pip install pyinstaller -q
 "%VPYTHON%" -m pip install "%SRC%" -q
 

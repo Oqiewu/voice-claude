@@ -1,5 +1,7 @@
+import ctypes
 import logging
 import os
+import sys
 import threading
 
 os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
@@ -22,8 +24,22 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+_MUTEX_NAME = "Global\\voice-claude-single-instance"
+
+
+def _acquire_single_instance() -> object:
+    """Returns a Windows mutex handle, or exits if another instance is running."""
+    handle = ctypes.windll.kernel32.CreateMutexW(None, True, _MUTEX_NAME)
+    if ctypes.windll.kernel32.GetLastError() == 183:  # ERROR_ALREADY_EXISTS
+        ctypes.windll.user32.MessageBoxW(
+            0, "voice-claude is already running.", "voice-claude", 0x30
+        )
+        sys.exit(1)
+    return handle
+
 
 def main() -> None:
+    _acquire_single_instance()
     config     = Config()
     recorder   = AudioRecorder(config)
     transcriber = Transcriber(config)
