@@ -87,12 +87,7 @@ if not exist "%EXE%" (
 
 :: ── Desktop shortcut ─────────────────────────────────────────────────────────
 set SHORTCUT=%USERPROFILE%\Desktop\voice-claude.lnk
-powershell -NoProfile -Command ^
-    "$ws = New-Object -ComObject WScript.Shell; ^
-     $s = $ws.CreateShortcut('%SHORTCUT%'); ^
-     $s.TargetPath = '%EXE%'; ^
-     $s.WorkingDirectory = '%INSTALL_DIR%\voice-claude'; ^
-     $s.Save()"
+powershell -NoProfile -Command "$ws = New-Object -ComObject WScript.Shell; $s = $ws.CreateShortcut('%SHORTCUT%'); $s.TargetPath = '%EXE%'; $s.WorkingDirectory = '%INSTALL_DIR%\voice-claude'; $s.Save()"
 
 echo.
 echo ================================
