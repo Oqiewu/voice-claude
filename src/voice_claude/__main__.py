@@ -47,7 +47,7 @@ def _acquire_single_instance() -> object:
 
 
 def main() -> None:
-    _acquire_single_instance()
+    _mutex = _acquire_single_instance()  # must be kept alive — GC would release it
     config     = Config()
     recorder   = AudioRecorder(config)
     transcriber = Transcriber(config)
