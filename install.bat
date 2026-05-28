@@ -13,7 +13,7 @@ set BRANCH=master
 set INSTALL_DIR=%LOCALAPPDATA%\voice-claude
 
 :: ── 1. Check Python ──────────────────────────────────────────────────────────
-echo [1/5] Checking Python...
+echo [1/6] Checking Python...
 python --version >nul 2>&1
 if errorlevel 1 (
     echo     Not found. Installing Python 3.12 via winget...
@@ -36,7 +36,7 @@ if errorlevel 1 (
 echo     OK: %PYTHON%
 
 :: ── 2. Download source ───────────────────────────────────────────────────────
-echo [2/5] Downloading voice-claude...
+echo [2/6] Downloading voice-claude...
 set TMP_ZIP=%TEMP%\voice-claude.zip
 set TMP_DIR=%TEMP%\voice-claude-src
 
@@ -58,21 +58,28 @@ if not exist "%SRC%\entry.py" (
 )
 
 :: ── 3. Virtual environment ───────────────────────────────────────────────────
-echo [3/5] Setting up virtual environment...
+echo [3/6] Setting up virtual environment...
 set VENV=%INSTALL_DIR%\.venv
 if not exist "%INSTALL_DIR%" md "%INSTALL_DIR%"
 if not exist "%VENV%" "%PYTHON%" -m venv "%VENV%"
 set VPYTHON=%VENV%\Scripts\python.exe
 
 :: ── 4. Install deps + build exe ──────────────────────────────────────────────
-echo [4/5] Installing dependencies...
+echo [4/6] Installing dependencies...
 set PIP="%VPYTHON%" -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org
 %PIP% --upgrade pip -q
 %PIP% faster-whisper sounddevice numpy pynput pystray Pillow certifi -q
 %PIP% pyinstaller -q
 %PIP% "%SRC%" -q
 
-echo [5/5] Building voice-claude.exe...
+echo [5/6] Downloading Whisper model 'base' (~150 MB)...
+"%VPYTHON%" -c "from faster_whisper import WhisperModel; WhisperModel('base', device='cpu', compute_type='int8')"
+if errorlevel 1 (
+    echo ERROR: Failed to download Whisper model.
+    pause & exit /b 1
+)
+
+echo [6/6] Building voice-claude.exe...
 "%VPYTHON%" -m PyInstaller --noconfirm --onedir --noconsole ^
     --name voice-claude ^
     --distpath "%INSTALL_DIR%" ^
@@ -103,6 +110,6 @@ echo ================================
 echo   Done!
 echo   Installed to: %INSTALL_DIR%\voice-claude\
 echo   Shortcut created on Desktop.
-echo   First launch downloads Whisper (~150 MB).
+echo   Whisper model is pre-downloaded and ready.
 echo ================================
 pause

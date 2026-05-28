@@ -14,11 +14,12 @@ logger = logging.getLogger(__name__)
 class Transcriber:
     def __init__(self, config: Config) -> None:
         self._config = config
-        logger.info("Loading Whisper model '%s' (first run downloads ~150 MB)...", config.model_size)
+        logger.info("Loading Whisper model '%s'...", config.model_size)
         self._model = WhisperModel(
             config.model_size,
             device=config.device,
             compute_type=config.compute_type,
+            local_files_only=True,  # model must be pre-downloaded by installer
         )
         logger.info("Whisper model loaded")
 
