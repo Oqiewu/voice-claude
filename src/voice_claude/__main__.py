@@ -1,5 +1,11 @@
 import logging
+import os
 import threading
+
+# suppress HuggingFace warnings before any hf imports happen
+os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
+os.environ.setdefault("TRANSFORMERS_NO_ADVISORY_WARNINGS", "1")
+os.environ.setdefault("HF_HUB_VERBOSITY", "error")
 
 from pynput import keyboard
 

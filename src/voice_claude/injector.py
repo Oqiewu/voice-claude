@@ -21,4 +21,7 @@ class TextInjector:
         with self._keyboard.pressed(Key.ctrl):
             self._keyboard.press("v")
             self._keyboard.release("v")
-        logger.info("Pasted %d characters", len(text))
+        time.sleep(0.05)
+        self._keyboard.press(Key.enter)
+        self._keyboard.release(Key.enter)
+        logger.info("Pasted %d characters and submitted", len(text))
