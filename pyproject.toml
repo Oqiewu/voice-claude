@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "voice-claude"
+version = "0.1.0"
+description = "Voice input for Claude Code on Windows"
+requires-python = ">=3.11"
+dependencies = [
+    "faster-whisper",
+    "sounddevice",
+    "numpy",
+    "pynput",
+    "pyperclip",
+]
+
+[project.scripts]
+voice-claude = "voice_claude.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/voice_claude"]
+
+[tool.ruff]
+src = ["src"]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
