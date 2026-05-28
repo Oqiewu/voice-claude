@@ -62,10 +62,11 @@ set VPYTHON=%VENV%\Scripts\python.exe
 
 :: ── 4. Install deps + build exe ──────────────────────────────────────────────
 echo [4/5] Installing dependencies...
-"%VPYTHON%" -m pip install --upgrade pip -q
-"%VPYTHON%" -m pip install faster-whisper sounddevice numpy pynput pystray Pillow -q
-"%VPYTHON%" -m pip install pyinstaller -q
-"%VPYTHON%" -m pip install "%SRC%" -q
+set PIP="%VPYTHON%" -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org
+%PIP% --upgrade pip -q
+%PIP% faster-whisper sounddevice numpy pynput pystray Pillow -q
+%PIP% pyinstaller -q
+%PIP% "%SRC%" -q
 
 echo [5/5] Building voice-claude.exe...
 "%VPYTHON%" -m PyInstaller --noconfirm --onedir --noconsole ^
