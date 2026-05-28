@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from pathlib import Path
 
 from pynput.keyboard import Key
+
+LOG_PATH = Path.home() / "AppData" / "Local" / "voice-claude" / "voice-claude.log"
 
 
 @dataclass(frozen=True)
