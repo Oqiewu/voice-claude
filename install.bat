@@ -9,7 +9,7 @@ echo.
 
 :: ── Config ───────────────────────────────────────────────────────────────────
 set REPO=Oqiewu/voice-claude
-set BRANCH=windows
+set BRANCH=master
 set INSTALL_DIR=%LOCALAPPDATA%\voice-claude
 
 :: ── 1. Check Python ──────────────────────────────────────────────────────────
